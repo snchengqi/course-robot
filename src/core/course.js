@@ -39,9 +39,15 @@ const startCourse = () => {
     }
 }
 
+const currentNode = () => {
+    return document.getElementsByClassName('chapter-list-box focus')[0]
+}
+
 const currentFinish = () => {
-    const status = document.getElementsByClassName('chapter-list-box focus')[0].lastElementChild.lastElementChild.lastElementChild.lastElementChild.innerHTML
-    return status === '重新学习'
+    const itemDom = currentNode().lastElementChild.lastElementChild
+    const type = itemDom.firstElementChild.innerHTML
+    const status = itemDom.lastElementChild.lastElementChild.innerHTML
+    return (status === '重新学习') || (type === '考试' && status !== '参与考试')
 }
 
 const changeVideoIfNecessary = () => {
@@ -73,7 +79,10 @@ const checkSituation = () => {
         } else {
             changeVideoIfNecessary()
         }
-    }, 3000)
+        const node = currentNode()
+        const courseName = node.getElementsByClassName('text-overflow')[0].innerText
+        window.document.title = `🔵正在播放【${courseName}】`
+    }, 1000)
 }
 
 const hasCourseNeedCountinue = () => {

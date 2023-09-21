@@ -40,7 +40,7 @@ const stopWork = async () => {
       console.warn(error)
     }
   }
-  stoargeUtil.set({btnText: '开始工作'})
+  stoargeUtil.set({btnText: '开始学习'})
 }
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {

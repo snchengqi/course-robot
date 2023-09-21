@@ -5,8 +5,8 @@ import {stoargeUtil} from './util/storage.js'
 import {config} from './util/config.js'
 
 const validUrl =  require('valid-url')
-const startWorkText = '开始工作'
-const stopWorkText = '结束工作'
+const startWorkText = '开始学习'
+const stopWorkText = '结束学习'
 const baseUrl = config.baseUrl
 // https://kc.zhixueyun.com/#/study/subject/detail/52d4b3dd-b6c9-4b33-b86e-1ea132aedfc6
 
@@ -57,7 +57,7 @@ const initPopup = async () => {
     }
   }) 
   startWorkBtn.addEventListener('click', () => {
-    if (startWorkBtn.innerHTML === '开始工作') {
+    if (startWorkBtn.innerHTML === '开始学习') {
       startWork(specialTopicIpt, startWorkBtn)
     } else {
       stopWork(specialTopicIpt, startWorkBtn)

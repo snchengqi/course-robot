@@ -11,7 +11,11 @@ const config = merge(common, {
     popup: PATHS.src + '/popup.js',
     contentScriptSpecial: PATHS.src + '/contentScriptSpecial.js',
     contentScriptCourse: PATHS.src + '/contentScriptCourse.js',
+    contentScriptPdfDownload: PATHS.src + '/contentScriptPdfDownload.js',
+    contentScriptExam: PATHS.src + '/contentScriptExam.js',
     background: PATHS.src + '/background.js',
+    pdf: PATHS.src + '/core/pdf.js',
+    exam: PATHS.src + '/core/exam.js',
   },
 });
 

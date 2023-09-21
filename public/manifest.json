@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Course Robot",
-  "version": "1.1.0",
-  "description": "The Course Robot For China Telecom Online University",
+  "version": "1.2.0",
+  "description": "The Course Robot For ZhiXueYun",
   "author": "qi.cheng",
   "icons": {
     "16": "icons/icon_16.png",
@@ -26,5 +26,16 @@
   "permissions": [
     "storage", "activeTab", "scripting", "privacy"
   ],
+  "content_scripts": [
+    {
+      "matches": ["https://kc.zhixueyun.com/*"],
+      "js": ["contentScriptPdfDownload.js", "contentScriptExam.js"],
+      "run_at": "document_start" 
+    }
+  ],
+  "web_accessible_resources": [{ 
+    "resources": ["pdf.js", "exam.js"],
+    "matches": ["<all_urls>"]
+  }],
   "host_permissions": ["https://kc.zhixueyun.com/*", "https://open.myctu.cn/*", "https://*/*", "http://*/*"]
 }

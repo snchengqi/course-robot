@@ -15,9 +15,9 @@ import {createSpecial} from './core/special.js'
 let special
 
 const startListenMessage = () => {
-    chrome.runtime.onMessage.addListener(({event}, sender, sendResponse) => {
+    chrome.runtime.onMessage.addListener(async ({event}, sender, sendResponse) => {
         if (event === 'nextCourse') {
-            const result = special.chooseCourseAndStudy()
+            const result = await special.chooseCourseAndStudy()
             sendResponse({farewell: result})
         }
     })
@@ -27,6 +27,6 @@ const startListenMessage = () => {
 (async () => {
     special = await createSpecial()
     startListenMessage()
-    special.chooseCourseAndStudy()
+    await special.chooseCourseAndStudy()
 })()
 

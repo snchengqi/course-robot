@@ -1,7 +1,7 @@
 {
   "name": "course-robot",
-  "version": "0.1.0",
-  "description": "The Course Robot For China Telecom Online University",
+  "version": "1.2.0",
+  "description": "The Course Robot For ZhiXueYun",
   "private": true,
   "scripts": {
     "watch": "node ./node_modules/webpack/bin/webpack.js --mode=development --watch --config config/webpack.config.js",

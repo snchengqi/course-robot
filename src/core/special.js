@@ -1,5 +1,8 @@
 import {config} from '../util/config.js'
+import {waitUtil} from '../util/common.js'
 
+const urlPrefixSubject = `${config.baseUrl}/#/study/subject/detail`
+const urlPrefixTrainNew = `${config.baseUrl}/#/train-new`
 //专题顶层抽象
 class Special {
 
@@ -7,12 +10,16 @@ class Special {
         this.notifyTaskId = undefined
     }
 
-    chooseCourseAndStudy() { 
+    async chooseCourseAndStudy() { 
         this.startNotifyTask()
-        const courseId = this.getCourses().shift()
+        const courseIds = await this.getCourses()
+        const courseId = courseIds.shift()
         const course = document.getElementById(courseId)
         if (course) {
+            console.log(course)
             course.click()
+            const courseName = this.getCourseName(course)
+            window.document.title = `🟦正在学习【${courseName}】`
             setTimeout(() => {
                 chrome.runtime.sendMessage({event: 'startStudyCourse'})
             }, 1000);
@@ -21,7 +28,7 @@ class Special {
             if (this.notifyTaskId) {
                 clearInterval(this.notifyTaskId)
             }
-            alert('已学完该专题所有课程，请学习其它专题！')
+            alert('✔已学完该专题所有课程，请学习其它专题！')
             chrome.runtime.sendMessage({event: 'stopWork'})
             return false
         }   
@@ -35,7 +42,11 @@ class Special {
         }
     }
 
-    getCourses() {
+    async getCourses() {
+    }
+    
+    getCourseName(course) {
+        
     }
 }
 
@@ -46,8 +57,12 @@ class CommonSpecial extends Special {
         this.courses = this.findCourseDoms()
     }
 
-    getCourses() {
+    async getCourses() {
         return this.courses
+    }
+    
+    getCourseName(course) {
+        return course.getElementsByClassName('name-des')[0].innerText
     }
 
     findCourseDoms() {
@@ -60,6 +75,59 @@ class CommonSpecial extends Special {
     }
 }
 
+class TrainNewSpecial extends Special {
+
+    constructor() {
+        super()
+        this.activityIndex = 0
+        this.activityCount = this.findActivityDoms().length
+    }
+
+    async getCourses() {
+        if (this.courses && this.courses.length > 0) {
+            return this.courses
+        }
+        while (this.activityIndex < this.activityCount) {
+            const activityDom = this.findActivityDoms()[this.activityIndex]
+            const triggerDom = activityDom.lastElementChild.firstElementChild.lastElementChild
+            if (triggerDom.getAttribute('title') === '展开') {
+                triggerDom.click()
+                const condition = () => this.findActivityDoms()[this.activityIndex].lastElementChild.firstElementChild.lastElementChild !== '展开'
+                await waitUtil(condition)
+            }
+            await waitUtil(() => {
+                const noMore = this.findActivityDoms()[this.activityIndex].getElementsByClassName('no-more')
+                return noMore && noMore.length > 0
+            }, () => {
+                let loadMoreDoms = this.findActivityDoms()[this.activityIndex].getElementsByClassName('btn load-more pointer')
+                if (loadMoreDoms && loadMoreDoms.length > 0) {
+                    loadMoreDoms[0].click()
+                }
+            })
+            const courseItemDoms = Array.from(this.findActivityDoms()[this.activityIndex].getElementsByClassName('train-citem'))
+            const courses = courseItemDoms.filter(item => {
+                const status = item.firstElementChild.lastElementChild.innerText
+                return status === '未完成'
+            }).map(item => item.firstElementChild.children[1].firstElementChild)
+            .map(item => item.id)
+            this.activityIndex++
+            if (courses && courses.length > 0) {
+                this.courses = courses
+                return this.courses
+            }
+        }
+        return []
+    }
+
+    getCourseName(course) {
+        return course.getElementsByClassName('title-name')[0].innerText
+    }
+
+    findActivityDoms() {
+        return Array.from(document.getElementsByClassName('section'))
+    }
+}
+
 class FirstParticularSpecial extends Special {
 
     constructor() {
@@ -69,15 +137,19 @@ class FirstParticularSpecial extends Special {
                         .map(item => item.id)
     }
 
-    getCourses() {
+    async getCourses() {
         return this.courses
+    }
+
+    getCourseName(course) {
+        return course.parentElement.parentElement.getElementsByClassName('text-overflow title')[0].lastElementChild.innerText
     }
 }
 
 class IllegalSpecial extends Special {
 
-    chooseCourseAndStudy() {
-        alert('该链接不是一个有效的专题，请结束并学习其它专题！')
+    async chooseCourseAndStudy() {
+        alert('⚠该链接不是一个有效的专题，请结束并学习其它专题！')
         chrome.runtime.sendMessage({event: 'stopWork'})
         return false
     }  
@@ -89,8 +161,15 @@ const isNotSpecial = () => {
 }
 
 const isCommonSpecial = () => {
+    const currentUrl = window.location.href
     const items = document.getElementsByClassName('item current-hover')
-    return items && items.length > 0
+    return currentUrl.indexOf(urlPrefixSubject) === 0 && items && items.length > 0
+}
+
+const isTrainNewSpecial = () => {
+    const currentUrl = window.location.href
+    const items = document.getElementsByClassName('section')
+    return currentUrl.indexOf(urlPrefixTrainNew) === 0 && items && items.length > 0
 }
 
 const isFirstParticularSpecial = () => {
@@ -107,8 +186,7 @@ const complateInShcedule = (resolve, specail, taskId) => {
 export const createSpecial = () => {
     return new Promise((resolve) => {
         const currentUrl = window.location.href
-        const urlPrefix = `${config.baseUrl}/#/study/subject/detail`
-        if (!currentUrl || currentUrl.indexOf(urlPrefix) !== 0) {
+        if (!currentUrl || (currentUrl.indexOf(urlPrefixSubject) !== 0 && currentUrl.indexOf(urlPrefixTrainNew) !== 0)) {
             resolve(new IllegalSpecial())
             return
         }
@@ -119,6 +197,10 @@ export const createSpecial = () => {
             }
             if (isCommonSpecial()) {
                 complateInShcedule(resolve, new CommonSpecial(), taskId) 
+                return
+            }
+            if (isTrainNewSpecial()) {
+                complateInShcedule(resolve, new TrainNewSpecial(), taskId) 
                 return
             }
             if (isFirstParticularSpecial()) {
