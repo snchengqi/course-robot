@@ -20,17 +20,13 @@ Course Robot中文译为课程机器人，是用于辅助学习“知学云”�
 
 以Chrome浏览器为例安装Course Robot扩展程序，其它浏览器大同小异。
 
-1. 浏览器【设置-隐私和安全-网站设置-弹出式窗口和重定向-允许发送弹出式窗口并使用重定向列表】，添加https://kc.zhixueyun.com
+1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.2.0/course-robot.zip)。
+
+2. 浏览器【设置-隐私和安全-网站设置-弹出式窗口和重定向-允许发送弹出式窗口并使用重定向列表】，添加https://kc.zhixueyun.com
    
    ![](./public/images/options/2022-08-28-12-23-50-1661660626221.jpg)![](./public/images/options/2022-08-28-12-26-08-1661660762546.jpg)![](./public/images/options/2022-08-28-12-28-48-1661660895453.jpg)![](./public/images/options/2022-08-28-12-31-04-1661661057301.jpg)
 
-2. 下载安装包course-robot.zip（不要下载源码），可以在项目目录下载，也可以选择发布的版本下载。
-   
-   ![](./public/images/options/1695264512354.jpg)
-   
-   ![](./public/images/options/1695264573541.jpg)
-
-3. 将安装包解压缩，然后打开浏览器扩展程序管理界面，打开开发者模式，加载已解压的扩展程序，选择刚刚解压缩的course-robot文件夹。
+3. 如果你是下载的zip压缩包（如果你是通过微软商店获取，则默认已经完成安装，直接跳过此步骤。），将安装包解压缩，然后打开浏览器扩展程序管理界面，打开开发者模式，加载已解压的扩展程序，选择刚刚解压缩的course-robot文件夹。
    
    ![](./public/images/options/2022-08-28-16-12-53-1661674365048.jpg)![](./public/images/options/2022-08-28-16-17-27-1661674639981.jpg)![](./public/images/options/2022-08-28-16-20-04-1661674788304.jpg)![](./public/images/options/2022-08-28-16-21-51-1661674907614.jpg)
 
