@@ -103,8 +103,8 @@ const notifyFinish = () => {
 export const createCourse = () => {
     return new Promise((resolve) => {
         const currentUrl = window.location.href
-        const urlPrefix = `${config.baseUrl}/#/study/course/detail`
-        if (!currentUrl || currentUrl.indexOf(urlPrefix) !== 0) {
+        const urlRegExp = new RegExp(`^${config.baseUrlPattern}/#/study/course/detail/[^]*$`, 'g')
+        if (!currentUrl || !urlRegExp.test(currentUrl)) {
             resolve(new OtherCourse())
             return
         }

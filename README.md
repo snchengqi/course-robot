@@ -20,9 +20,9 @@ Course Robot中文译为课程机器人，是用于辅助学习“知学云”�
 
 以Chrome浏览器为例安装Course Robot扩展程序，其它浏览器大同小异。
 
-1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.2.0/course-robot.zip)。
+1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.3.0/course-robot.zip)。
 
-2. 浏览器【设置-隐私和安全-网站设置-弹出式窗口和重定向-允许发送弹出式窗口并使用重定向列表】，添加https://kc.zhixueyun.com
+2. 浏览器【设置-隐私和安全-网站设置-弹出式窗口和重定向-允许发送弹出式窗口并使用重定向列表】，添加https://kc.zhixueyun.com （如果公司知识中心三级域名不是kc.zhixueyun.com，则自行查看添加，或者设置默认允许网站可以发送弹出式窗口并使用重定向）
    
    ![](./public/images/options/2022-08-28-12-23-50-1661660626221.jpg)![](./public/images/options/2022-08-28-12-26-08-1661660762546.jpg)![](./public/images/options/2022-08-28-12-28-48-1661660895453.jpg)![](./public/images/options/2022-08-28-12-31-04-1661661057301.jpg)
 

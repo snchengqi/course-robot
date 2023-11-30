@@ -1,8 +1,10 @@
 import {config} from '../util/config.js'
 import {waitUtil} from '../util/common.js'
 
-const urlPrefixSubject = `${config.baseUrl}/#/study/subject/detail`
-const urlPrefixTrainNew = `${config.baseUrl}/#/train-new`
+const urlSubjectPattren = `^${config.baseUrlPattern}/#/study/subject/detail/[^]*$`
+const urlTrainNewPattren = `^${config.baseUrlPattern}/#/train-new/[^]*$`
+const urlSubjectRegExp = new RegExp(urlSubjectPattren, 'g')
+const urlTrainNewRegExp = new RegExp(urlTrainNewPattren, 'g')
 //专题顶层抽象
 class Special {
 
@@ -163,13 +165,15 @@ const isNotSpecial = () => {
 const isCommonSpecial = () => {
     const currentUrl = window.location.href
     const items = document.getElementsByClassName('item current-hover')
-    return currentUrl.indexOf(urlPrefixSubject) === 0 && items && items.length > 0
+    // return currentUrl.indexOf(urlPrefixSubject) === 0 && items && items.length > 0
+    return urlSubjectRegExp.test(currentUrl) && items && items.length > 0
 }
 
 const isTrainNewSpecial = () => {
     const currentUrl = window.location.href
     const items = document.getElementsByClassName('section')
-    return currentUrl.indexOf(urlPrefixTrainNew) === 0 && items && items.length > 0
+    // return currentUrl.indexOf(urlPrefixTrainNew) === 0 && items && items.length > 0
+    return urlTrainNewRegExp.test(currentUrl) && items && items.length > 0
 }
 
 const isFirstParticularSpecial = () => {
@@ -186,7 +190,7 @@ const complateInShcedule = (resolve, specail, taskId) => {
 export const createSpecial = () => {
     return new Promise((resolve) => {
         const currentUrl = window.location.href
-        if (!currentUrl || (currentUrl.indexOf(urlPrefixSubject) !== 0 && currentUrl.indexOf(urlPrefixTrainNew) !== 0)) {
+        if (!currentUrl || (!urlSubjectRegExp.test(currentUrl) && !urlTrainNewRegExp.test(currentUrl))) {
             resolve(new IllegalSpecial())
             return
         }

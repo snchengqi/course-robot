@@ -1,3 +1,3 @@
 export const config = {
-    baseUrl: 'https://kc.zhixueyun.com'
+    baseUrlPattern: 'https://[^]+.zhixueyun.com'
 }

@@ -7,7 +7,7 @@ import {config} from './util/config.js'
 const validUrl =  require('valid-url')
 const startWorkText = '开始学习'
 const stopWorkText = '结束学习'
-const baseUrl = config.baseUrl
+const baseUrlPattern = config.baseUrlPattern
 // https://kc.zhixueyun.com/#/study/subject/detail/52d4b3dd-b6c9-4b33-b86e-1ea132aedfc6
 
 const startWork = (specialTopicIpt, startWorkBtn) => {
@@ -50,7 +50,8 @@ const initPopup = async () => {
   initStatus(specialTopicIpt, startWorkBtn, specialTopic, btnText)
   specialTopicIpt.addEventListener('input', () => {
     specialTopic = specialTopicIpt.value
-    if (specialTopic && specialTopic !== '' && validUrl.isWebUri(specialTopic) && specialTopic.indexOf(baseUrl) === 0) {
+    const regExp = new RegExp(`^${baseUrlPattern}/[^]*$`, 'g')
+    if (specialTopic && specialTopic !== '' && validUrl.isWebUri(specialTopic) && regExp.test(specialTopic)) {
       startWorkBtn.disabled = false
     } else {
       startWorkBtn.disabled = true
