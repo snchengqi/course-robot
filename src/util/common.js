@@ -45,3 +45,21 @@ export const waitUtil = (condition, func) => {
         }, 500);
     })
 }
+
+export const doUntil = (condition, func) => {
+    return new Promise(resolve => {
+        if (condition()) {
+            resolve()
+            return
+        }
+        const taskId = setInterval(() => {
+            if (condition()) {
+                clearInterval(taskId)
+                resolve()
+            }
+            if (func) {
+                func()
+            }
+        }, 500);
+    })
+}

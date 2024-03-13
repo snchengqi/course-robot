@@ -1,5 +1,5 @@
 import {config} from '../util/config.js'
-import {waitUtil} from '../util/common.js'
+import {waitUtil, doUntil} from '../util/common.js'
 
 const urlSubjectPattren = `^${config.baseUrlPattern}/#/study/subject/detail/[^]*$`
 const urlTrainNewPattren = `^${config.baseUrlPattern}/#/train-new/[^]*$`
@@ -97,7 +97,7 @@ class TrainNewSpecial extends Special {
                 const condition = () => this.findActivityDoms()[this.activityIndex].lastElementChild.firstElementChild.lastElementChild !== '展开'
                 await waitUtil(condition)
             }
-            await waitUtil(() => {
+            await doUntil(() => {
                 const noMore = this.findActivityDoms()[this.activityIndex].getElementsByClassName('no-more')
                 return noMore && noMore.length > 0
             }, () => {
