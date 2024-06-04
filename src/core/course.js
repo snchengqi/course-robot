@@ -8,12 +8,81 @@ class Course {
 class CommonCourse extends Course {
 
     start() {
-        if (!hasCourseNeedCountinue()) {
+        if (!this.hasCourseNeedCountinue()) {
             notifyFinish()
             return
         }
         startCourse()
-        checkSituation()
+        this.checkSituation()
+    }
+
+    parseInnerDom(item) {
+        // return item.lastElementChild.lastElementChild
+        return item.lastElementChild.children[1]
+    }
+
+    isCompleted(status) {
+        return status === '重新学习' || status === '已完成'
+    }
+
+    hasCourseNeedCountinue() {
+        const lists = Array.from(document.getElementsByClassName('chapter-list-box'))
+        const needCoutinue = lists.some(item => {
+            const innerDom = this.parseInnerDom(item)
+            const type = innerDom.firstElementChild.innerHTML
+            const status = innerDom.lastElementChild.lastElementChild.innerHTML
+            return (type === '视频' || type === '文档') && !this.isCompleted(status)
+        })
+        return needCoutinue
+    }
+
+    checkSituation() {
+        const taskId = setInterval(() => {
+            const needCoutinue = this.hasCourseNeedCountinue()
+            if (!needCoutinue) {
+                clearInterval(taskId)
+                notifyFinish()
+            } else {
+                this.changeVideoIfNecessary()
+            }
+            const node = currentNode()
+            const courseName = node.getElementsByClassName('text-overflow')[0].innerText
+            window.document.title = `🔵正在播放【${courseName}】`
+        }, 1000)
+    }
+
+    changeVideoIfNecessary() {
+        if (this.currentFinish()) {
+            const nextCourse = Array.from(document.getElementsByClassName('chapter-list-box')).filter(item => {
+                const innerDom = this.parseInnerDom(item)
+                const type = innerDom.firstElementChild.innerHTML
+                const status = innerDom.lastElementChild.lastElementChild.innerHTML
+                return (type === '视频' || type === '文档') && !this.isCompleted(status)
+            }).shift()
+            if (nextCourse) {
+                nextCourse.click()
+                setTimeout(() => {
+                    startCourse()
+                }, 1000);
+            } 
+        } else {
+            //有些电脑太卡，初始化时播放不了，用于兜底
+            startCourse()
+        }
+    }
+
+    currentFinish() {
+        const itemDom = this.parseInnerDom(currentNode())
+        const type = itemDom.firstElementChild.innerHTML
+        const status = itemDom.lastElementChild.lastElementChild.innerHTML
+        return (this.isCompleted(status)) || (type === '考试' && status !== '参与考试')
+    }
+}
+
+class RenbaoCourse extends CommonCourse {
+
+    parseInnerDom(item) {
+        return item.lastElementChild.children[1]
     }
 }
 
@@ -43,59 +112,6 @@ const currentNode = () => {
     return document.getElementsByClassName('chapter-list-box focus')[0]
 }
 
-const currentFinish = () => {
-    const itemDom = currentNode().lastElementChild.lastElementChild
-    const type = itemDom.firstElementChild.innerHTML
-    const status = itemDom.lastElementChild.lastElementChild.innerHTML
-    return (status === '重新学习') || (type === '考试' && status !== '参与考试')
-}
-
-const changeVideoIfNecessary = () => {
-    if (currentFinish()) {
-        const nextCourse = Array.from(document.getElementsByClassName('chapter-list-box')).filter(item => {
-            const innerDom = item.lastElementChild.lastElementChild
-            const type = innerDom.firstElementChild.innerHTML
-            const status = innerDom.lastElementChild.lastElementChild.innerHTML
-            return (type === '视频' || type === '文档') && status !== '重新学习'
-        }).shift()
-        if (nextCourse) {
-            nextCourse.click()
-            setTimeout(() => {
-                startCourse()
-            }, 1000);
-        } 
-    } else {
-        //有些电脑太卡，初始化时播放不了，用于兜底
-        startCourse()
-    }
-}
-
-const checkSituation = () => {
-    const taskId = setInterval(() => {
-        const needCoutinue = hasCourseNeedCountinue()
-        if (!needCoutinue) {
-            clearInterval(taskId)
-            notifyFinish()
-        } else {
-            changeVideoIfNecessary()
-        }
-        const node = currentNode()
-        const courseName = node.getElementsByClassName('text-overflow')[0].innerText
-        window.document.title = `🔵正在播放【${courseName}】`
-    }, 1000)
-}
-
-const hasCourseNeedCountinue = () => {
-    const lists = Array.from(document.getElementsByClassName('chapter-list-box'))
-    const needCoutinue = lists.some(item => {
-        const innerDom = item.lastElementChild.lastElementChild
-        const type = innerDom.firstElementChild.innerHTML
-        const status = innerDom.lastElementChild.lastElementChild.innerHTML
-        return (type === '视频' || type === '文档') && status !== '重新学习'
-    })
-    return needCoutinue
-}
-
 const notifyFinish = () => {
     chrome.runtime.sendMessage({event: 'finishStudyCourse'})
 }
@@ -113,13 +129,26 @@ export const createCourse = () => {
             if (domCollection && domCollection.length > 0) {
                 clearInterval(taskId)
                 const lists = Array.from(domCollection)
-                const hasCourse = lists.some(item => {
-                    const innerDom = item.lastElementChild.lastElementChild
+                let hasCourse = lists.some(item => {
+                    // const innerDom = item.lastElementChild.lastElementChild
+                    const innerDom = item.lastElementChild.children[1]
                     const type = innerDom.firstElementChild.innerHTML
                     return type === '视频'|| type === '文档'
                 })
-                const course = hasCourse? new CommonCourse(): new OtherCourse()
-                resolve(course)
+                if (hasCourse) {
+                    resolve(new CommonCourse())
+                    return
+                }
+                // hasCourse = lists.some(item => {
+                //     const innerDom = item.lastElementChild.children[1]
+                //     const type = innerDom.firstElementChild.innerHTML
+                //     return type === '视频'|| type === '文档'
+                // })
+                // if (hasCourse) {
+                //     resolve(new RenbaoCourse())
+                //     return
+                // }
+                resolve(new OtherCourse())
             }
         }, 1000);
     })

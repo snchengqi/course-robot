@@ -2,7 +2,7 @@
 
 Course Robot中文译为课程机器人，是用于辅助学习“知学云”平台网上大学课程的浏览器扩展程序。
 
-适用范围：中国移动、中国电信、国家电投、中国石油、中国广核集团等企业使用“知学云在线学习平台”要求完成网上课程学习的员工。
+适用范围：中国移动、中国电信、中国人民保险、国家电投、中国石油、中国广核集团等企业使用“知学云在线学习平台”要求完成网上课程学习的员工。
 
 ## 软件特性
 
@@ -20,7 +20,7 @@ Course Robot中文译为课程机器人，是用于辅助学习“知学云”�
 
 以Chrome浏览器为例安装Course Robot扩展程序，其它浏览器大同小异。
 
-1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.4.0/course-robot.zip)。
+1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.5.0/course-robot.zip)。
 
 2. 浏览器【设置-隐私和安全-网站设置-弹出式窗口和重定向-允许发送弹出式窗口并使用重定向列表】，添加https://kc.zhixueyun.com （如果公司知识中心三级域名不是kc.zhixueyun.com，则自行查看添加，或者设置默认允许网站可以发送弹出式窗口并使用重定向）
    
