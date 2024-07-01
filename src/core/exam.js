@@ -4,13 +4,13 @@ let interval = null
 
 // #/exam/exam/answer-paper
 if (location.hash.match('#/exam/exam/answer-paper')) {
-  const allowDom = document.createElement('a')
+  const allowDom = document.createElement('div')
   allowDom.id = 'allowSwitchAndCopy'
-  allowDom.className = 'btn block w-half m-top'
+  allowDom.className = 'hand-save-btn themeColor-border-color themeColor-color'
   allowDom.innerText = '允许复制/切屏'
   allowDom.addEventListener('click', allowSwitchAndCopy)
-  waitUtil(() => document.querySelector('.side-main #D165submit'), () => {
-      const submitDom = document.querySelector('.side-main #D165submit')
+  waitUtil(() => document.querySelector('.hand-save-btn'), () => {
+      const submitDom = document.querySelector('.hand-save-btn')
       submitDom.parentNode.insertBefore(allowDom, submitDom)
   })
 }

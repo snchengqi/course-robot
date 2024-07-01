@@ -21,6 +21,14 @@ class CommonCourse extends Course {
         return item.lastElementChild.children[1]
     }
 
+    parseType(innerDom) {
+        return innerDom.firstElementChild.innerHTML
+    }
+
+    parseStatus(innerDom) {
+        return innerDom.lastElementChild.lastElementChild.innerHTML
+    }
+
     isCompleted(status) {
         return status === '重新学习' || status === '已完成'
     }
@@ -29,8 +37,8 @@ class CommonCourse extends Course {
         const lists = Array.from(document.getElementsByClassName('chapter-list-box'))
         const needCoutinue = lists.some(item => {
             const innerDom = this.parseInnerDom(item)
-            const type = innerDom.firstElementChild.innerHTML
-            const status = innerDom.lastElementChild.lastElementChild.innerHTML
+            const type = this.parseType(innerDom)
+            const status = this.parseStatus(innerDom)
             return (type === '视频' || type === '文档') && !this.isCompleted(status)
         })
         return needCoutinue
@@ -55,8 +63,8 @@ class CommonCourse extends Course {
         if (this.currentFinish()) {
             const nextCourse = Array.from(document.getElementsByClassName('chapter-list-box')).filter(item => {
                 const innerDom = this.parseInnerDom(item)
-                const type = innerDom.firstElementChild.innerHTML
-                const status = innerDom.lastElementChild.lastElementChild.innerHTML
+                const type = this.parseType(innerDom)
+                const status = this.parseStatus(innerDom)
                 return (type === '视频' || type === '文档') && !this.isCompleted(status)
             }).shift()
             if (nextCourse) {
@@ -72,17 +80,24 @@ class CommonCourse extends Course {
     }
 
     currentFinish() {
-        const itemDom = this.parseInnerDom(currentNode())
-        const type = itemDom.firstElementChild.innerHTML
-        const status = itemDom.lastElementChild.lastElementChild.innerHTML
+        const innerDom = this.parseInnerDom(currentNode())
+        const type = this.parseType(innerDom)
+        const status = this.parseStatus(innerDom)
         return (this.isCompleted(status)) || (type === '考试' && status !== '参与考试')
     }
 }
 
-class RenbaoCourse extends CommonCourse {
+class NewVersionCourse extends CommonCourse {
 
-    parseInnerDom(item) {
-        return item.lastElementChild.children[1]
+    parseType(innerDom) {
+        return innerDom.firstElementChild.children[1].innerHTML
+    }
+
+    parseStatus(innerDom) {
+        if (innerDom.firstElementChild.children[3]) {
+            return '未完成'
+        } 
+        return '已完成'
     }
 }
 
@@ -139,15 +154,15 @@ export const createCourse = () => {
                     resolve(new CommonCourse())
                     return
                 }
-                // hasCourse = lists.some(item => {
-                //     const innerDom = item.lastElementChild.children[1]
-                //     const type = innerDom.firstElementChild.innerHTML
-                //     return type === '视频'|| type === '文档'
-                // })
-                // if (hasCourse) {
-                //     resolve(new RenbaoCourse())
-                //     return
-                // }
+                hasCourse = lists.some(item => {
+                    const innerDom = item.lastElementChild.children[1]
+                    const type = innerDom.firstElementChild.children[1].innerHTML
+                    return type === '视频'|| type === '文档'
+                })
+                if (hasCourse) {
+                    resolve(new NewVersionCourse())
+                    return
+                }
                 resolve(new OtherCourse())
             }
         }, 1000);

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Course Robot",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "The Course Robot For ZhiXueYun",
   "author": "qi.cheng",
   "icons": {

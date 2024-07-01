@@ -21,8 +21,12 @@ if (location.hash.match('#/study/course/detail')) {
     
     setInterval(() => {
         
-        const fullScreenDiv = document.querySelector('.pull-right .iconfont.icon-full-screen')
+        const fullScreenDiv = document.querySelector('.title-screen')
         let downloadDiv = document.querySelector('#download')
+        // console.log('pdfViewer')
+        // console.log(window.pdfViewer)
+        // console.log('fullScreenDiv')
+        // console.log(fullScreenDiv)
         if (window.pdfViewer && fullScreenDiv && !downloadDiv) {
             downloadDiv = document.createElement('div')
             downloadDiv.id = 'download'

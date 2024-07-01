@@ -10,7 +10,7 @@ Course Robot中文译为课程机器人，是用于辅助学习“知学云”�
 
 - 考试界面支持复制和切屏。
 
-- pdf文档下载支持，帮助复习和搜题。
+- ~~pdf文档下载支持，帮助复习和搜题。~~
 
 ## 兼容性
 
@@ -20,7 +20,7 @@ Course Robot中文译为课程机器人，是用于辅助学习“知学云”�
 
 以Chrome浏览器为例安装Course Robot扩展程序，其它浏览器大同小异。
 
-1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.5.0/course-robot.zip)。
+1. 获取course-robot扩展程序安装包，Edge浏览器可在[微软应用商店](https://microsoftedge.microsoft.com/addons/detail/course-robot/iccmcglahjfomdcjgegidnjhjnajbfpo?hl=zh-CN)获取，其它浏览器下载[zip压缩包](https://gitee.com/snchengqi/course-robot/releases/download/1.6.0/course-robot.zip)。
 
 2. 浏览器【设置-隐私和安全-网站设置-弹出式窗口和重定向-允许发送弹出式窗口并使用重定向列表】，添加https://kc.zhixueyun.com （如果公司知识中心三级域名不是kc.zhixueyun.com，则自行查看添加，或者设置默认允许网站可以发送弹出式窗口并使用重定向）
    
@@ -52,7 +52,7 @@ Course Robot中文译为课程机器人，是用于辅助学习“知学云”�
 
 ##### 允许复制切屏
 
-<img title="" src="./public/images/options/1695265820150.jpg" alt="" data-align="inline" width="663">
+<img src="./public/images/options/2024-07-01-09-12-48-1719796357973.jpg" title="" alt="" width="654">
 
 <img title="" src="./public/images/options/1695265836793.jpg" alt="" data-align="inline" width="703">
 
